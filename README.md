@@ -1,5 +1,9 @@
 # THE FULL ORBIT — Monday 23 November 2026
 
+[![make.fun](https://make.fun/badge/news-image-20261123.svg)](https://make.fun/bounty/news-image-20261123)
+[![rank](https://make.fun/badge/news-image-20261123/DLiiMaGaming/daily-orbit-v2-20261123/rank.svg)](https://make.fun/bounty/news-image-20261123)
+[![reward](https://make.fun/badge/news-image-20261123/DLiiMaGaming/daily-orbit-v2-20261123/reward.svg)](https://make.fun/bounty/news-image-20261123)
+
 **Suggested submission title:** Monday 23 November 2026: 44 sourced stories, 7 regions, a UTC timeline and a date check
 
 One image that sums up the world's news of **Monday 23 November 2026**: a
