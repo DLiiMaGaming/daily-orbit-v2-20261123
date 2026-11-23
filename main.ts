@@ -7,14 +7,33 @@
 //
 // Local check:  mkdir -p out && MAKEFUN_OUTPUT_DIR=out node main.ts
 
-import { copyFileSync, mkdirSync } from 'node:fs';
+import { copyFileSync, mkdirSync, readFileSync } from 'node:fs';
+import { createHash } from 'node:crypto';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const outDir = process.env.MAKEFUN_OUTPUT_DIR ?? '/output';
+const srcPath = join(here, 'entry.png');
+const outPath = join(outDir, 'entry.png');
+
+const sha256 = (buf) => createHash('sha256').update(buf).digest('hex');
+
+// Size gate: the competition caps the entry image at 1 MiB.
+const srcSize = readFileSync(srcPath).length;
+if (srcSize > 1_048_576) {
+  throw new Error(`entry.png too large: ${srcSize} bytes exceeds the 1 MiB (1048576 bytes) limit`);
+}
 
 mkdirSync(outDir, { recursive: true });
-copyFileSync(join(here, 'entry.png'), join(outDir, 'entry.png'));
+copyFileSync(srcPath, outPath);
 
-console.log('wrote', join(outDir, 'entry.png'));
+// Integrity check: the copied bytes must hash identically to the source,
+// otherwise the grader would see a different image than the one submitted.
+const srcHash = sha256(readFileSync(srcPath));
+const outHash = sha256(readFileSync(outPath));
+if (srcHash !== outHash) {
+  throw new Error(`integrity check failed: source sha256 ${srcHash} != output sha256 ${outHash}`);
+}
+
+console.log(`wrote ${outPath} — source ${srcSize} bytes, sha256 ${srcHash}`);
